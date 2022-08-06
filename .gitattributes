@@ -1,0 +1,4 @@
+*.{js,ts,mjs,cjs,json,yml} linguist-vendored
+.husky/**/* linguist-vendored
+.yarn/**/* linguist-vendored
+public/**/* linguist-vendored
