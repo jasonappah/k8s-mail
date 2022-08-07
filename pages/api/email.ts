@@ -77,11 +77,9 @@ export default async function handler(
       error: "Not a valid method",
     });
   }
-//   Pretend this doesn't exist
-process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = 0
-  const r = await fetch(
-    new URL(endpoint, clusterHost).href
-  );
+  //   Pretend this doesn't exist
+  process.env["NODE_TLS_REJECT_UNAUTHORIZED"] = 0;
+  const r = await fetch(new URL(endpoint, clusterHost).href);
   const out = await r.text();
   res.status(200).json({ out });
 
