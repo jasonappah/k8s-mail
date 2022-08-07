@@ -3,24 +3,24 @@ import getCluster from "../../getCluster";
 import verify from "../../webhookVerify";
 
 interface StoredMessageWebhook {
-//   event: "stored";
+  //   event: "stored";
   id: string;
   "log-level": string;
   flags: {
     "is-test-mode": boolean;
   };
+  subject: string;
   message: {
     headers: {
       to: string;
       "message-id": string;
-      from: string;
-      subject: string;
     };
     // TODO Type this properly lol
     attachments: unknown[];
     recipients: string[];
     size: number;
   };
+  sender: string;
   storage: {
     url: string;
     key: string;
@@ -69,13 +69,25 @@ export default async function handler(
   console.log("YUH");
   const [clusterHost] = await getCluster();
   // TODO: make this do k8s stuff
-  const r = await fetch("https://api.github.com/repos/zeit/next.js");
+  console.log(req.body);
+  const METHODS = ["GET", "POST", "PUT", "DELETE", "PATCH"];
+  const [method, endpoint] = req.body.subject.split(" ");
+  if (!METHODS.includes(method.toUpperCase())) {
+    return res.status(406).json({
+      error: "Not a valid method",
+    });
+  }
+//   Pretend this doesn't exist
+process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = 0
+  const r = await fetch(
+    new URL(endpoint, clusterHost).href
+  );
   const out = await r.text();
   res.status(200).json({ out });
 
-  const sender = "hey@jasonaa.me";
-  const subject = "Hello";
-  const text = "sup";
+  const sender = req.body.sender;
+  const subject = req.body.subject;
+  const text = out;
 
   try {
     await mg.messages.create(process.env.MAILGUN_DOMAIN, {
