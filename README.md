@@ -1,5 +1,7 @@
 # What's Next?
 
+If you run this I would highly recommend using [kind](https://kind.sigs.k8s.io)
+
 This is a modified [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 In comparison to the as-is project bootstrapped directly with the `create-next-app` command, the What's Next? template includes the following modifications:
